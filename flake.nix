@@ -1,4 +1,3 @@
-
 {
   description = "C++ Template";
 
@@ -11,53 +10,74 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-      
-      mkShell = compilerStdenv: pkgs.mkShell {
-        NIX_ENFORCE_PURITY = 1;
-        
-        nativeBuildInputs = with pkgs; [
-          cmake
-          pkg-config
-          clang-tools
-          gdb
-        ] ++ [
-          compilerStdenv.cc
-          compilerStdenv.cc.bintools
-        ];
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
 
-        buildInputs = with pkgs; [
-        ];
+        mkShell =
+          compilerStdenv:
+          pkgs.mkShell {
+            NIX_ENFORCE_PURITY = 1;
 
-        shellHook = ''
-          alias ls=${pkgs.eza}/bin/eza
-          alias ll="${pkgs.eza}/bin/eza -l --git --icons"
-          alias cat=${pkgs.bat}/bin/bat
+            nativeBuildInputs =
+              with pkgs;
+              [
+                cmake
+                pkg-config
+                clang-tools
+                gdb
+                autoconf
+                automake
+                libtool
 
-          echo "Environment ready with:"
-          echo "- CC: $(which $CC)"
-          echo "- CXX: $(which $CXX)"
-          echo "- - compiler version: $($CC --version | head -n1)"
-          echo "- Developer tools: atuin, eza, bat, fzf"
-        '';
-      };
+                eza
+                bat
+              ]
+              ++ [
+                compilerStdenv.cc
+                compilerStdenv.cc.bintools
+              ];
 
-    in {
-      devShells = {
-        gcc = mkShell pkgs.gcc14Stdenv;
-        clang = mkShell pkgs.llvmPackages_19.stdenv;
-        default = self.devShells.${system}.clang;
-      };
+            buildInputs = with pkgs; [
+              boost
+              openssl
+            ];
 
-      packages.default = pkgs.stdenv.mkDerivation {
-        pname = "threadlike";
-        version = "0.0.1";
-        src = ./.;
-        shell = mkShell pkgs.gcc14Stdenv;
-        nativeBuildInputs = self.shell.nativeBuildInputs;
-        buildInputs = self.shell.buildInputs;
-      };
-    });
+            shellHook = ''
+              alias ls=${pkgs.eza}/bin/eza
+              alias ll="${pkgs.eza}/bin/eza -l --git --icons"
+              alias cat=${pkgs.bat}/bin/bat
+
+              export PROMPT_SPACE="thrlik"
+
+              clear
+            '';
+          };
+
+      in
+      {
+        devShells = {
+          gcc = mkShell pkgs.gcc14Stdenv;
+          clang = mkShell pkgs.llvmPackages_19.stdenv;
+          default = self.devShells.${system}.clang;
+        };
+
+        packages.default = pkgs.stdenv.mkDerivation {
+          pname = "threadlike";
+          version = "0.0.1";
+          src = ./.;
+          shell = mkShell pkgs.gcc14Stdenv;
+          nativeBuildInputs = self.shell.nativeBuildInputs;
+          buildInputs = self.shell.buildInputs;
+        };
+      }
+    );
 }
