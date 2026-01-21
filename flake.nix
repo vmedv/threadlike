@@ -52,12 +52,7 @@
             ];
 
             shellHook = ''
-              alias ls=${pkgs.eza}/bin/eza
-              alias ll="${pkgs.eza}/bin/eza -l --git --icons"
-              alias cat=${pkgs.bat}/bin/bat
-
-              export PROMPT_SPACE="thrlik"
-
+              export PS1_PREF="rtw"
               clear
             '';
           };
@@ -65,16 +60,16 @@
       in
       {
         devShells = {
-          gcc = mkShell pkgs.gcc14Stdenv;
-          clang = mkShell pkgs.llvmPackages_19.stdenv;
+          gcc = mkShell pkgs.gcc15Stdenv;
+          clang = mkShell pkgs.llvmPackages_21.stdenv;
           default = self.devShells.${system}.clang;
         };
 
         packages.default = pkgs.stdenv.mkDerivation {
-          pname = "threadlike";
+          pname = "rtw";
           version = "0.0.1";
           src = ./.;
-          shell = mkShell pkgs.gcc14Stdenv;
+          shell = mkShell pkgs.gcc15Stdenv;
           nativeBuildInputs = self.shell.nativeBuildInputs;
           buildInputs = self.shell.buildInputs;
         };
