@@ -1,4 +1,4 @@
-# threadlike lib
+# rtw (runtime wrapper) lib
 
 > [!NOTE]
 > This project is in really early stage, so API will probably change.
@@ -13,8 +13,8 @@ For now, we have `std::thread`, `boost::fiber`, `argobots`.
 
 For API overview you can check [main file](src/main.cpp).
 
-To support new mechanism you should implement [`threading` concept](std/threading.h). You can check requirements in comments in
-file above.
+To support new mechanism you should implement [`rtw` concept](include/rtw.h). 
+You can check requirements in comments in file above.
 
 ## TL;DR about c++ concepts
 
@@ -26,10 +26,11 @@ C++ concepts express constraints to the type:
 ## Usage
 
 You can enable useful modules (everything disabled by default): e.g. `-DUSE_FIBERS=on`.
-Also be prepared that lib will build argobots from scratch (if you need some local tweaks, see (config script)[./scripts/abt-install.sh])
+Also be prepared that lib will build argobots from scratch.
+(if you need some local tweaks, see [config script](./scripts/abt-install.sh))
 
 > [!NOTE]
-> You can't actually disable std::threads wrapper, but there are generally no reason for this.
+> You can't actually disable std::threads wrapper, but there are generally no reason to do this.
 
 Example of usage:
 

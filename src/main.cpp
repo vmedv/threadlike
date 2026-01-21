@@ -1,13 +1,13 @@
 #include <boost/fiber/all.hpp>
 #include <iostream>
 
-#include "threading.h"
+#include "rtw.h"
 
 #include "argobots.h"
 #include "fibers.h"
 #include "threads.h"
 
-template <threading T> void workload() {
+template <rtw T> void workload() {
   auto env = T::create();
   std::cout << "with threading: " << env.mechanismId() << std::endl;
 
