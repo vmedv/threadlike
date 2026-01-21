@@ -4,7 +4,10 @@
 > This project is in really early stage, so API will probably change.
 
 ## Overview
+
 This library should provide generic API for different threading mechanisms.
+
+You want to use `rtw` interface library in other projects, basically.
 
 For now, we have `std::thread`, `boost::fiber`, `argobots`.
 
@@ -22,14 +25,16 @@ C++ concepts express constraints to the type:
 
 ## Usage
 
-You can optionally provide path to argobots installation via `ARGOBOTS_PATH`: if omitted, lib will build without argobots.
+You can enable useful modules (everything disabled by default): e.g. `-DUSE_FIBERS=on`.
+Also be prepared that lib will build argobots from scratch (if you need some local tweaks, see (config script)[./scripts/abt-install.sh])
 
 > [!NOTE]
-> I am currently implementing auto finding argobots in system paths or
-> fallbacking to install & build in place.
+> You can't actually disable std::threads wrapper, but there are generally no reason for this.
+
+Example of usage:
 
 ```bash
-cmake -S . -B build -DARGOBOTS_PATH=/path/to/argobots/installation # see argobots guide
+cmake -S . -B <build-dir> [-DUSE_{MODULE}=on]* 
 
 cmake --build build
 ```

@@ -1,7 +1,8 @@
 #pragma once
 
+#ifdef DUSE_ARGOBOTS
+
 #include "abt.h"
-#include <string_view>
 
 struct argobots {
 public:
@@ -57,3 +58,5 @@ private:
   ABT_xstream xstream;
   ABT_pool pool;
 };
+
+#endif

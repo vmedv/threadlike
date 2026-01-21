@@ -34,6 +34,10 @@ template <threading T> void workload() {
 
 int main() {
   workload<threads>();
+  #ifdef DUSE_FIBERS
   workload<fibers>();
+  #endif
+  #ifdef DUSE_ARGOBOTS
   workload<argobots>();
+  #endif
 }
